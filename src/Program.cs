@@ -42,31 +42,34 @@ namespace Shell
             CommandMgr.RemoveCommand(strCommand[1]);
             Console.WriteLine("Removed command");
             break;
+          //list Commands
           case "list":
-            //list Commands
             Console.WriteLine("Listing commands...");
             Console.WriteLine($"Command\t\t->\t\tExecution path");
-
-            foreach (var command in CommandMgr.GetCommandNames())
+            foreach (var command in CommandMgr.GetCommands())
             {
               Console.WriteLine($"{command.Name}\t\t->\t\t{command.Path}");
             }
             break;
+            //Clear the window
           case "clear":
             Console.Clear();
+            break;
+            //End the current process
+          case "close":
+            commandProcess?.Kill();
             break;
           //Execute
           default:
             //Check if a process is in execution
             if(commandProcess != null)
             {
-              Console.WriteLine($"The command {CommandMgr.GetCommandByPath(commandProcess.StartInfo.FileName)} is in execution");
+              Console.WriteLine($"The command {CommandMgr.GetCommandNameByPath(commandProcess.StartInfo.FileName)} is in execution");
               Console.WriteLine("Write \"close\" for end it or wait");
               continue;
             }
-
             //Get the path of the command
-            string strPath = CommandMgr.GetCommandPath(strCommand[0]);
+            string strPath = CommandMgr.GetCommandPathByName(strCommand[0]);
             //If the path is empty, continue
             if (string.IsNullOrWhiteSpace(strPath))
             {
@@ -81,7 +84,7 @@ namespace Shell
             startInfo.FileName = strPath;
             //Set the arguments
             startInfo.Arguments = /*"/c " + */string.Join(" ", strCommand.ToList().Skip(1));
-            //Redirecto de info streams
+            //Redirec to the info streams
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardInput = true;
             startInfo.RedirectStandardError = true;
@@ -98,8 +101,7 @@ namespace Shell
             commandProcess.Start();
             //Start the events firer
             commandProcess.BeginOutputReadLine();
-            commandProcess.BeginErrorReadLine();
-            
+            commandProcess.BeginErrorReadLine();            
             break;
         }
       }
