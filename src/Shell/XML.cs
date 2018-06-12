@@ -8,7 +8,7 @@ namespace Shell
   /// <summary>
   /// XML Helper
   /// </summary>
-  static class XML
+  public static class XML
   {/// <summary>
   /// Deserialize the list from the XML File
   /// </summary>
