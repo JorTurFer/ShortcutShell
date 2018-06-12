@@ -7,7 +7,7 @@ namespace UnitTests
   [TestClass]
   public class XMLTest
   {
-    const string XMLPATH = "./Commands.xml";
+    public const string XMLPATH = "./Commands.xml";
     [TestMethod]
     public void Generation()
     {
@@ -25,7 +25,6 @@ namespace UnitTests
         Assert.AreEqual(lstItem[i].Name, lstRead[i].Name,"Error in Name");
         Assert.AreEqual(lstItem[i].Path, lstRead[i].Path,"Error in Path");
       }
-
     }
   }
 }
