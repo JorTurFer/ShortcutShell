@@ -24,11 +24,13 @@ namespace Shell
         {
           //Add a command
           case "add":
+            //If the array must have at less 3 items (add->Command->Path)
             if (strCommand.Length < 3)
             {
               Console.WriteLine("Error en los datos introducidos");
               continue;
             }
+            //Add Command joining the end of the array
             CommandMgr.AddCommand(strCommand[1], string.Join(" ", strCommand.ToList().Skip(2)));
             break;
           //Execute
