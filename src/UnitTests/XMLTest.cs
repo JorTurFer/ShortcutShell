@@ -14,8 +14,8 @@ namespace UnitTests
     {
       //Generation of XML
       List<Item> lstItem = new List<Item>();
-      lstItem.Add(new Item() { Name = "test1", Path = "test1.exe" });
-      lstItem.Add(new Item() { Name = "test2", Path = "test2.exe" });
+      lstItem.Add(new Item { Name = "test1", Path = "test1.exe" });
+      lstItem.Add(new Item { Name = "test2", Path = "test2.exe" });
       XML.Serialization(lstItem, XMLPATH);
       //Read XML
       List<Item> lstRead = XML.Deserialize(XMLPATH);
