@@ -22,7 +22,7 @@ namespace Shell
         }
         //Commands splited
         string[] strCommand = strInput.Split(' ');
-        switch (strCommand[0].ToLower())
+        switch (strCommand[0].ToLowerInvariant())
         {
           //Add a command
           case "add":
