@@ -31,12 +31,16 @@ namespace UnitTests
     {
       Assert.AreEqual("test1.exe", CommandMgr.GetCommandPathByName("test1"), "Error, getting the path");
       Assert.AreEqual("test2.exe", CommandMgr.GetCommandPathByName("test2"), "Error, getting the path");
+      TestContext.WriteLine($"Expected \"test1.exe\" -> Recived \"{CommandMgr.GetCommandPathByName("test1")}\"");
+      TestContext.WriteLine($"Expected \"test2.exe\" -> Recived \"{CommandMgr.GetCommandPathByName("test2")}\"");
     }
     [TestMethod]
     public void NameByPathTest()
     {
       Assert.AreEqual("test1", CommandMgr.GetCommandNameByPath("test1.exe"), "Error, getting the name");
       Assert.AreEqual("test2", CommandMgr.GetCommandNameByPath("test2.exe"), "Error, getting the name");
+      TestContext.WriteLine($"Expected \"test1\" -> Recived \"{CommandMgr.GetCommandNameByPath("test1.exe")}\"");
+      TestContext.WriteLine($"Expected \"test2\" -> Recived \"{CommandMgr.GetCommandNameByPath("test2.exe")}\"");
     }
     [TestMethod]
     public void RemoveTest()
