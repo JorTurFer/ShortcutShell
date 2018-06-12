@@ -92,9 +92,10 @@ namespace Shell
             startInfo.UseShellExecute = false;
             //Set the start info
             commandProcess.StartInfo = startInfo;
-            //Suscribe the events
+            //Suscribe the stream events
             commandProcess.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
             commandProcess.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
+            //Activate and suscribe the exit event
             commandProcess.EnableRaisingEvents = true;
             commandProcess.Exited += (s, e) => commandProcess = null;
             //Start the process
