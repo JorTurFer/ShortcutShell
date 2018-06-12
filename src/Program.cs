@@ -83,7 +83,7 @@ namespace Shell
             //Set the start path
             startInfo.FileName = strPath;
             //Set the arguments
-            startInfo.Arguments = /*"/c " + */string.Join(" ", strCommand.ToList().Skip(1));
+            startInfo.Arguments = string.Join(" ", strCommand.ToList().Skip(1));
             //Redirec to the info streams
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardInput = true;
