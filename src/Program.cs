@@ -28,19 +28,32 @@ namespace Shell
             //If the array must have at less 3 items (add->Command->Path)
             if (strCommand.Length < 3)
             {
-              Console.WriteLine("Error en los datos introducidos");
+              Console.WriteLine("Error adding the command, follow the template \"add CommandName CommandPath\"");
               continue;
             }
             //Add Command joining the end of the array
             CommandMgr.AddCommand(strCommand[1], string.Join(" ", strCommand.ToList().Skip(2)));
+            Console.WriteLine("Added command");
             break;
           //Remove a command
           case "remove":
-            //Todo
+            //remove Command
+            CommandMgr.RemoveCommand(strCommand[1]);
+            Console.WriteLine("Removed command");
+            break;
+          case "list":
+            //list Commands
+            Console.WriteLine("Listing commands...");
+            Console.WriteLine($"Command\t\t->\t\tExecution path");
+
+            foreach (var command in CommandMgr.GetCommandNames())
+            {
+              Console.WriteLine($"{command.Name}\t\t->\t\t{command.Path}");
+            }
             break;
           case "clear":
             Console.Clear();
-              break;
+            break;
           //Execute
           default:
             //Get the path of the command

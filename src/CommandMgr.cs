@@ -18,6 +18,20 @@ namespace Shell
       m_lstItems.Add(newItem);
       XML.Serialization(m_lstItems,XMLPATH);
     }
+    public static void RemoveCommand(string strName)
+    {
+      Item newItem = m_lstItems.Where(x=>string.Equals(x.Name,strName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+      if (newItem != null)
+      {
+        m_lstItems.Remove(newItem);
+        XML.Serialization(m_lstItems, XMLPATH);
+      }
+    }
+
+    public static List<Item> GetCommandNames()
+    {
+      return m_lstItems;
+    }
 
     public static string GetCommandPath(string strName)
     {
