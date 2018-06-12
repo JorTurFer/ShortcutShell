@@ -4,11 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
-  [TestClass]
+  [TestClass, TestCategory("XMLTest")]
   public class XMLTest
   {
     public const string XMLPATH = "./Commands.xml";
-    [TestMethod]
+    [TestMethod, TestCategory("XMLTest")]
     public void Generation()
     {
       //Generation of XML
