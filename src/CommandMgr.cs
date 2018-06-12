@@ -18,6 +18,7 @@ namespace Shell
       m_lstItems.Add(newItem);
       XML.Serialization(m_lstItems,XMLPATH);
     }
+
     public static void RemoveCommand(string strName)
     {
       Item newItem = m_lstItems.Where(x=>string.Equals(x.Name,strName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
@@ -36,6 +37,11 @@ namespace Shell
     public static string GetCommandPath(string strName)
     {
       return m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Path;
+    }
+
+    public static string GetCommandByPath(string strPath)
+    {
+      return m_lstItems.Where(x => string.Equals(x.Path, strPath, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Name;
     }
   }
 }

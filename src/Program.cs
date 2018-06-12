@@ -9,6 +9,7 @@ namespace Shell
   {
     static void Main(string[] args)
     {
+      Process commandProcess = null;
       string strInput = "";
 
       while (strInput != "exit")
@@ -56,6 +57,14 @@ namespace Shell
             break;
           //Execute
           default:
+            //Check if a process is in execution
+            if(commandProcess != null)
+            {
+              Console.WriteLine($"The command {CommandMgr.GetCommandByPath(commandProcess.StartInfo.FileName)} is in execution");
+              Console.WriteLine("Write \"close\" for end it or wait");
+              continue;
+            }
+
             //Get the path of the command
             string strPath = CommandMgr.GetCommandPath(strCommand[0]);
             //If the path is empty, continue
@@ -65,7 +74,7 @@ namespace Shell
               continue;
             }
             //Create the process
-            Process commandProcess = new Process();
+            commandProcess = new Process();
             //Create the start info
             ProcessStartInfo startInfo = new ProcessStartInfo();
             //Set the start path
@@ -83,13 +92,14 @@ namespace Shell
             //Suscribe the events
             commandProcess.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
             commandProcess.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
+            commandProcess.EnableRaisingEvents = true;
+            commandProcess.Exited += (s, e) => commandProcess = null;
             //Start the process
             commandProcess.Start();
             //Start the events firer
             commandProcess.BeginOutputReadLine();
             commandProcess.BeginErrorReadLine();
-            //Wait for exit
-            commandProcess.WaitForExit();
+            
             break;
         }
       }
