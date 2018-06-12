@@ -29,8 +29,8 @@ namespace UnitTests
         Assert.AreEqual(lstItem[i].Path, lstRead[i].Path, "Error in Path");
         TestContext.WriteLine($"lstItem.Name = {lstItem[i].Name}");
         TestContext.WriteLine($"lstRead.Name = {lstRead[i].Name}");
-        TestContext.WriteLine($"lstItem.PAth = {lstItem[i].Path}");
-        TestContext.WriteLine($"lstRead.PAth = {lstRead[i].Path}");
+        TestContext.WriteLine($"lstItem.Path = {lstItem[i].Path}");
+        TestContext.WriteLine($"lstRead.Path = {lstRead[i].Path}");
       }
     }
   }
