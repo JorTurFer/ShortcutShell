@@ -2,7 +2,6 @@
 using Shell;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
 namespace UnitTests
 {
   [TestClass]
@@ -52,7 +51,6 @@ namespace UnitTests
       CommandMgr.RemoveCommand("test2");
       Assert.AreEqual(0, CommandMgr.GetCommands().Count, "Error removing commands");
       TestContext.WriteLine($"List.Count Before = {CommandMgr.GetCommands().Count}");
-
     }
   }
 }
