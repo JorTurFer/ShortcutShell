@@ -38,6 +38,9 @@ namespace Shell
           case "remove":
             //Todo
             break;
+          case "clear":
+            Console.Clear();
+              break;
           //Execute
           default:
             //Get the path of the command
