@@ -1,28 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace Shell
 {
   static class XML
   {
-    static void WriteXML(List<Item> list, string strPath)
+    public static List<Item> Deserialize(string a_fileName)
     {
-      XmlSerializer x = new XmlSerializer(typeof(Item));
-      TextWriter writer = new StreamWriter(strPath);
-      x.Serialize(writer, list);
+      try
+      {
+        XmlSerializer deserializer = new XmlSerializer(typeof(List<Item>));
+        using (TextReader reader = new StreamReader(a_fileName))
+        {
+          object obj = deserializer.Deserialize(reader);
+          reader.Close();
+          return (List<Item>)obj;
+        }
+      }
+      catch 
+      {
+        return new List<Item>();
+      }
     }
 
-    List<Item> ReadXML(string strPath)
+    public static void Serialization(List<Item> a_stations, string a_fileName)
     {
-      XmlSerializer x = new XmlSerializer(typeof(Item));
-      TextReader reader = new StreamReader(strPath);
-
-      return x.Deserialize(reader);
+      XmlSerializer serializer = new XmlSerializer(typeof(List<Item>));
+      using (var stream = File.OpenWrite(a_fileName))
+      {
+        serializer.Serialize(stream, a_stations);
+      }
     }
+
   }
 }

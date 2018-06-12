@@ -7,8 +7,9 @@ using System.Xml.Serialization;
 
 namespace Shell
 {
+  [Serializable]
   [XmlRoot("Item")]
-  class Item
+  public class Item
   {
     [XmlElement("Name")]
     public string Name { get; set; }
