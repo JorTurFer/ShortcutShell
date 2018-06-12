@@ -32,6 +32,5 @@ namespace Shell
         serializer.Serialize(stream, a_stations);
       }
     }
-
   }
 }
