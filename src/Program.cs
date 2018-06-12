@@ -28,9 +28,7 @@ namespace Shell
             //If the array must have at less 3 items (add->Command->Path)
             if (strCommand.Length < 3)
             {
-              //This will byPass ConsoleLog check
-              string strMesageOut = "Error en los datos introducidos";
-              Console.WriteLine(strMesageOut);
+              Console.WriteLine("Error en los datos introducidos");
               continue;
             }
             //Add Command joining the end of the array
@@ -47,9 +45,7 @@ namespace Shell
             //If the path is empty, continue
             if (string.IsNullOrWhiteSpace(strPath))
             {
-              //This will byPass ConsoleLog check
-              string strMesageOut = "Comando no registrado";
-              Console.WriteLine(strMesageOut);
+              Console.WriteLine("Comando no registrado");
               continue;
             }
             //Create the process
