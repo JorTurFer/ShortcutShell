@@ -4,11 +4,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
-  [TestClass, TestCategory("XMLTest")]
+  [TestClass]
   public class XMLTest
   {
+    public TestContext TestContext { get; set; }
     public const string XMLPATH = "./Commands.xml";
-    [TestMethod, TestCategory("XMLTest")]
+    [TestMethod]
     public void Generation()
     {
       //Generation of XML
@@ -19,11 +20,17 @@ namespace UnitTests
       //Read XML
       List<Item> lstRead = XML.Deserialize(XMLPATH);
       //Asserts
-      Assert.AreEqual(lstItem.Count, lstRead.Count,"Error in List.Count");
+      Assert.AreEqual(lstItem.Count, lstRead.Count, "Error in List.Count");
+      TestContext.WriteLine($"lstItem.Count {lstItem.Count}");
+      TestContext.WriteLine($"lstRead.Count {lstRead.Count}");
       for (int i = 0; i < lstItem.Count; i++)
       {
-        Assert.AreEqual(lstItem[i].Name, lstRead[i].Name,"Error in Name");
-        Assert.AreEqual(lstItem[i].Path, lstRead[i].Path,"Error in Path");
+        Assert.AreEqual(lstItem[i].Name, lstRead[i].Name, "Error in Name");
+        Assert.AreEqual(lstItem[i].Path, lstRead[i].Path, "Error in Path");
+        TestContext.WriteLine($"lstItem.Name = {lstItem[i].Name}");
+        TestContext.WriteLine($"lstRead.Name = {lstRead[i].Name}");
+        TestContext.WriteLine($"lstItem.PAth = {lstItem[i].Path}");
+        TestContext.WriteLine($"lstRead.PAth = {lstRead[i].Path}");
       }
     }
   }
