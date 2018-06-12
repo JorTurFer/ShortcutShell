@@ -14,7 +14,9 @@ namespace UnitTests
     {
       //Clean the files 
       if (File.Exists(XMLTest.XMLPATH))
+      {
         File.Delete(XMLTest.XMLPATH);
+      }
 
       var lstCommands = CommandMgr.GetCommands();
       Assert.AreEqual(0, lstCommands.Count, "Error cleaning the CommandMgr");

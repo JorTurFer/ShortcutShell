@@ -8,7 +8,7 @@ namespace UnitTests
   public class XMLTest
   {
     public TestContext TestContext { get; set; }
-    public const string XMLPATH = "./Commands.xml";
+    public static readonly string XMLPATH = "./Commands.xml";
     [TestMethod]
     public void Generation()
     {
