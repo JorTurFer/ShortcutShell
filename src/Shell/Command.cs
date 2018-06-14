@@ -16,7 +16,6 @@ namespace Shell
 
     public Command()
     {
-
     }
     public Command(string str)
     {

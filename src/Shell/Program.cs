@@ -7,7 +7,7 @@ namespace Shell
 {
   static class Program
   {
-    static Process commandProcess = null;
+    static Process commandProcess;
     static void Main(string[] args)
     {      
       bool bContinue = true;
