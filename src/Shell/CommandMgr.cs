@@ -13,17 +13,15 @@ namespace Shell
     /// <summary>
     /// Command collection
     /// </summary>
-    static List<Item> m_lstItems = XML.Deserialize(XMLPATH);
+    static List<Command> m_lstItems = XML.Deserialize(XMLPATH);
     /// <summary>
     /// Add command to the list
     /// </summary>
     /// <param name="strName">Command name</param>
     /// <param name="strPath">Execution path</param>
-    public static void AddCommand(string strName, string strPath)
+    public static void AddCommand(string strInput)
     {
-      Item newItem = new Item();
-      newItem.Name = strName;
-      newItem.Path = strPath;
+      Command newItem = new Command(strInput);
       m_lstItems.Add(newItem);
       XML.Serialization(m_lstItems, XMLPATH);
     }
@@ -33,16 +31,15 @@ namespace Shell
     /// <param name="strName">Comand name</param>
     public static void RemoveCommand(string strName)
     {
-      Item newItem = m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).First();
+      Command newItem = m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).First();
       m_lstItems.Remove(newItem);
       XML.Serialization(m_lstItems, XMLPATH);
-
     }
     /// <summary>
     /// Get the command list
     /// </summary>
     /// <returns></returns>
-    public static List<Item> GetCommands()
+    public static List<Command> GetCommands()
     {
       return m_lstItems;
     }
@@ -54,6 +51,10 @@ namespace Shell
     public static string GetCommandPathByName(string strName)
     {
       return m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Path;
+    }
+    public static Command GetCommandByName(string strName)
+    {
+      return m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
     }
     /// <summary>
     /// Get the command name by path

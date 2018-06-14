@@ -20,8 +20,8 @@ namespace UnitTests
       var lstCommands = CommandMgr.GetCommands();
       Assert.AreEqual(0, lstCommands.Count, "Error cleaning the CommandMgr");
       TestContext.WriteLine($"List.Count After = {lstCommands.Count}");
-      CommandMgr.AddCommand("test1", "test1.exe");
-      CommandMgr.AddCommand("test2", "test2.exe");
+      CommandMgr.AddCommand("test1 -p \"test1.exe\"");
+      CommandMgr.AddCommand("test2 -p \"test2.exe\"");
       Assert.AreEqual(2, CommandMgr.GetCommands().Count, "Error adding commands");
       TestContext.WriteLine($"List.Count Before = {CommandMgr.GetCommands().Count}");
     }
