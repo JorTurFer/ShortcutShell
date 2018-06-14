@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Shell;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,6 +13,11 @@ namespace UnitTests
     [TestMethod]
     public void Generation()
     {
+      //Clean the files 
+      if (File.Exists(XMLTest.XMLPATH))
+      {
+        File.Delete(XMLTest.XMLPATH);
+      }
       //Generation of XML
       List<Command> lstItem = new List<Command>();
 
