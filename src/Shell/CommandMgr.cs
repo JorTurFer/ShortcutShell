@@ -19,11 +19,9 @@ namespace Shell
     /// </summary>
     /// <param name="strName">Command name</param>
     /// <param name="strPath">Execution path</param>
-    public static void AddCommand(string strName, string strPath)
+    public static void AddCommand(string strInput)
     {
-      Command newItem = new Command();
-      newItem.Name = strName;
-      newItem.Path = strPath;
+      Command newItem = new Command(strInput);
       m_lstItems.Add(newItem);
       XML.Serialization(m_lstItems, XMLPATH);
     }

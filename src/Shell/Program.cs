@@ -26,7 +26,7 @@ namespace Shell
         {
           //Add a command
           case "add":
-            AddCommand(strCommand);
+            AddCommand(string.Join(" ",strCommand.Skip(1)));
             break;
           //Remove a command
           case "remove":
@@ -107,18 +107,12 @@ namespace Shell
       commandProcess.BeginErrorReadLine();
     }
 
-    static void AddCommand(string[] strCommand)
+    static void AddCommand(string strInput)
     {
-      //If the array must have at less 3 items (add->Command->Path)
-      if (strCommand.Length < 3)
-      {
-        Console.WriteLine("Error adding the command, follow the template \"add CommandName CommandPath\"");
-        return;
-      }
-      if (!CommandMgr.Exists(strCommand[1]))
+      if (!CommandMgr.Exists(strInput.Split(' ')[0]))
       {
         //Add Command joining the end of the array
-        CommandMgr.AddCommand(strCommand[1], string.Join(" ", strCommand.ToList().Skip(2)));
+        CommandMgr.AddCommand(strInput);
         Console.WriteLine("Added command");
       }
       else
