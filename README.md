@@ -11,9 +11,10 @@ This application provides a customizable shortcut shell from terminal
 |"close"|close|If any command is in execution, closes it|
 |"clear"|clear|Clear the window|
 
-System arguments
-	1.-p "path" -> Indicate the path of the binary
-	2.-d "true/false" -> Indicate if the command should be attached to shell or not
+## System arguments
+
+	-p "path" -> Indicate the path of the binary
+	-d "true/false" -> Indicate if the command should be attached to shell or not
 
 ## Usage Commands
 |Command|Syntax|Description|
