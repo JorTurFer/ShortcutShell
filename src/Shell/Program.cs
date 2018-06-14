@@ -61,7 +61,7 @@ namespace Shell
       }
     }
 
-    private static void Execute(Command CurrentCommand, string strArgumments)
+    static void Execute(Command CurrentCommand, string strArgumments)
     {
       //Check if a process is in execution
       if (commandProcess != null)
@@ -116,7 +116,6 @@ namespace Shell
         commandProcess = null;
       }
     }
-
     static void AddCommand(string strInput)
     {
       if (!CommandMgr.Exists(strInput.Split(' ')[0]))
@@ -146,10 +145,10 @@ namespace Shell
     static void ListCommand()
     {
       Console.WriteLine("Listing commands...");
-      Console.WriteLine($"Command\t\t->\t\tExecution path");
+      Console.WriteLine($"Command\t->\tDettached\t->\tExecution path");
       foreach (var command in CommandMgr.GetCommands())
       {
-        Console.WriteLine($"{command.Name}\t->\t{command.Path}");
+        Console.WriteLine($"{command.Name}\t->\t{command.Dettached}\t->\t{command.Path}");
       }
     }
   }
