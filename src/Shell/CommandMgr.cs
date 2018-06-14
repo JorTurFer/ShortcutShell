@@ -20,12 +20,12 @@ namespace Shell
     /// <param name="strName">Command name</param>
     /// <param name="strPath">Execution path</param>
     public static void AddCommand(string strName, string strPath)
-    {      
+    {
       Item newItem = new Item();
       newItem.Name = strName;
       newItem.Path = strPath;
       m_lstItems.Add(newItem);
-      XML.Serialization(m_lstItems,XMLPATH);
+      XML.Serialization(m_lstItems, XMLPATH);
     }
     /// <summary>
     /// Remove command from the list
@@ -33,12 +33,10 @@ namespace Shell
     /// <param name="strName">Comand name</param>
     public static void RemoveCommand(string strName)
     {
-      Item newItem = m_lstItems.Where(x=>string.Equals(x.Name,strName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-      if (newItem != null)
-      {
-        m_lstItems.Remove(newItem);
-        XML.Serialization(m_lstItems, XMLPATH);
-      }
+      Item newItem = m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).First();
+      m_lstItems.Remove(newItem);
+      XML.Serialization(m_lstItems, XMLPATH);
+
     }
     /// <summary>
     /// Get the command list
@@ -65,6 +63,15 @@ namespace Shell
     public static string GetCommandNameByPath(string strPath)
     {
       return m_lstItems.Where(x => string.Equals(x.Path, strPath, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Name;
+    }
+    /// <summary>
+    /// Check if the command exists previously
+    /// </summary>
+    /// <param name="strName">Command Name</param>
+    /// <returns></returns>
+    public static bool Exists(string strName)
+    {
+      return m_lstItems.Exists(x => x.Name == strName);
     }
   }
 }
