@@ -52,6 +52,10 @@ namespace Shell
     {
       return m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Path;
     }
+    public static Command GetCommandByName(string strName)
+    {
+      return m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+    }
     /// <summary>
     /// Get the command name by path
     /// </summary>

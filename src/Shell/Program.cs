@@ -9,7 +9,7 @@ namespace Shell
   {
     static Process commandProcess;
     static void Main(string[] args)
-    {      
+    {
       bool bContinue = true;
 
       while (bContinue)
@@ -26,7 +26,7 @@ namespace Shell
         {
           //Add a command
           case "add":
-            AddCommand(string.Join(" ",strCommand.Skip(1)));
+            AddCommand(string.Join(" ", strCommand.Skip(1)));
             break;
           //Remove a command
           case "remove":
@@ -36,7 +36,7 @@ namespace Shell
           case "list":
             ListCommand();
             break;
-            //Clear the window
+          //Clear the window
           case "clear":
             Console.Clear();
             break;
@@ -51,13 +51,17 @@ namespace Shell
             continue;
           //Execute
           default:
-            Execute(strCommand);
+            var command = CommandMgr.GetCommandByName(strCommand[0]);
+            if (command != null)
+            {
+              Execute(command, string.Join(" ", strCommand.ToList().Skip(1)));
+            }
             break;
         }
       }
     }
 
-    private static void Execute(string[] strCommand)
+    private static void Execute(Command CurrentCommand, string strArgumments)
     {
       //Check if a process is in execution
       if (commandProcess != null)
@@ -66,45 +70,51 @@ namespace Shell
         Console.WriteLine("Write \"close\" for end it or wait");
         return;
       }
-      //Get the path of the command
-      string strPath = CommandMgr.GetCommandPathByName(strCommand[0]);
-      //If the path is empty, continue
-      if (string.IsNullOrWhiteSpace(strPath))
-      {
-        Console.WriteLine("Comando no registrado");
-        return;
-      }
       //Create the process
       commandProcess = new Process();
       //Create the start info
       ProcessStartInfo startInfo = new ProcessStartInfo();
       //Set the start path
-      startInfo.FileName = strPath;
+      startInfo.FileName = CurrentCommand.Path;
       //Set the arguments
-      startInfo.Arguments = string.Join(" ", strCommand.ToList().Skip(1));
-      //Redirec to the info streams
-      startInfo.RedirectStandardOutput = true;
-      startInfo.RedirectStandardInput = true;
-      startInfo.RedirectStandardError = true;
-      startInfo.CreateNoWindow = true;
-      startInfo.UseShellExecute = false;
-      //Set the start info
-      commandProcess.StartInfo = startInfo;
-      //Suscribe the stream events
-      commandProcess.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
-      commandProcess.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
-      //Activate and suscribe the exit event
-      commandProcess.EnableRaisingEvents = true;
-      commandProcess.Exited += (s, e) =>
+      startInfo.Arguments = strArgumments;
+      if (!CurrentCommand.Dettached)
+      {//Redirec to the info streams
+        startInfo.RedirectStandardOutput = true;
+        startInfo.RedirectStandardInput = true;
+        startInfo.RedirectStandardError = true;
+        startInfo.CreateNoWindow = true;
+        startInfo.UseShellExecute = false;
+        //Set the start info
+        commandProcess.StartInfo = startInfo;
+        //Suscribe the stream events
+        commandProcess.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
+        commandProcess.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
+        //Activate and suscribe the exit event
+        commandProcess.EnableRaisingEvents = true;
+        commandProcess.Exited += (s, e) =>
+        {
+          Console.WriteLine($"->{CommandMgr.GetCommandNameByPath(commandProcess.StartInfo.FileName)} ended!!");
+          commandProcess = null;
+        };
+      }
+      else
       {
-        Console.WriteLine($"->{CommandMgr.GetCommandNameByPath(commandProcess.StartInfo.FileName)} ended!!");
-        commandProcess = null;
-      };
+        //Set the start info
+        commandProcess.StartInfo = startInfo;
+      }
       //Start the process
       commandProcess.Start();
-      //Start the events firer
-      commandProcess.BeginOutputReadLine();
-      commandProcess.BeginErrorReadLine();
+      if (!CurrentCommand.Dettached)
+      {
+        //Start the events firer
+        commandProcess.BeginOutputReadLine();
+        commandProcess.BeginErrorReadLine();
+      }
+      else
+      {
+        commandProcess = null;
+      }
     }
 
     static void AddCommand(string strInput)
@@ -117,7 +127,7 @@ namespace Shell
       }
       else
       {
-        Console.WriteLine("The command already existed");
+        Console.WriteLine("The command already exists");
       }
     }
     private static void RemoveCommand(string strName)
@@ -132,7 +142,7 @@ namespace Shell
       {
         Console.WriteLine("The command doesn't exist");
       }
-    }   
+    }
     static void ListCommand()
     {
       Console.WriteLine("Listing commands...");
