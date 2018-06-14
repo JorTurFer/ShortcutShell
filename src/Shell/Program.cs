@@ -32,15 +32,29 @@ namespace Shell
               Console.WriteLine("Error adding the command, follow the template \"add CommandName CommandPath\"");
               continue;
             }
-            //Add Command joining the end of the array
-            CommandMgr.AddCommand(strCommand[1], string.Join(" ", strCommand.ToList().Skip(2)));
-            Console.WriteLine("Added command");
+            if (!CommandMgr.Exists(strCommand[1]))
+            {
+              //Add Command joining the end of the array
+              CommandMgr.AddCommand(strCommand[1], string.Join(" ", strCommand.ToList().Skip(2)));
+              Console.WriteLine("Added command");
+            }
+            else
+            {
+              Console.WriteLine("The command already existed");
+            }
             break;
           //Remove a command
           case "remove":
-            //remove Command
-            CommandMgr.RemoveCommand(strCommand[1]);
-            Console.WriteLine("Removed command");
+            if (CommandMgr.Exists(strCommand[1]))
+            {
+              //remove Command
+              CommandMgr.RemoveCommand(strCommand[1]);
+              Console.WriteLine("Removed command");
+            }
+            else
+            {
+              Console.WriteLine("The command doesn't exist");
+            }
             break;
           //list Commands
           case "list":
