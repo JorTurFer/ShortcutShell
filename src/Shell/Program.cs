@@ -10,11 +10,11 @@ namespace Shell
     static void Main(string[] args)
     {
       Process commandProcess = null;
-      string strInput = "";
+      bool bContinue = true;
 
-      while (strInput != "exit")
+      while (bContinue)
       {
-        strInput = Console.ReadLine();
+        string strInput = Console.ReadLine();
         //Empty input
         if (string.IsNullOrWhiteSpace(strInput))
         {
@@ -48,17 +48,22 @@ namespace Shell
             Console.WriteLine($"Command\t\t->\t\tExecution path");
             foreach (var command in CommandMgr.GetCommands())
             {
-              Console.WriteLine($"{command.Name}\t\t->\t\t{command.Path}");
+              Console.WriteLine($"{command.Name}\t->\t{command.Path}");
             }
             break;
             //Clear the window
           case "clear":
             Console.Clear();
             break;
-            //End the current process
+          //End the current process
           case "close":
             commandProcess?.Kill();
             break;
+          //Eit the shell
+          case "exit":
+            commandProcess?.Kill();
+            bContinue = false;
+            continue;
           //Execute
           default:
             //Check if a process is in execution
@@ -97,7 +102,11 @@ namespace Shell
             commandProcess.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
             //Activate and suscribe the exit event
             commandProcess.EnableRaisingEvents = true;
-            commandProcess.Exited += (s, e) => commandProcess = null;
+            commandProcess.Exited += (s, e) =>
+            {
+              Console.WriteLine($"->{CommandMgr.GetCommandNameByPath(commandProcess.StartInfo.FileName)} ended!!");
+              commandProcess = null;              
+            };
             //Start the process
             commandProcess.Start();
             //Start the events firer
