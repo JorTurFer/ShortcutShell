@@ -14,21 +14,21 @@ namespace Shell
   /// </summary>
   /// <param name="strFileName">XML Path</param>
   /// <returns></returns>
-    public static List<Item> Deserialize(string strFileName)
+    public static List<Command> Deserialize(string strFileName)
     {
       try
       {
-        XmlSerializer deserializer = new XmlSerializer(typeof(List<Item>));
+        XmlSerializer deserializer = new XmlSerializer(typeof(List<Command>));
         using (TextReader reader = new StreamReader(strFileName))
         {
           object obj = deserializer.Deserialize(reader);
           reader.Close();
-          return (List<Item>)obj;
+          return (List<Command>)obj;
         }
       }
       catch 
       {
-        return new List<Item>();
+        return new List<Command>();
       }
     }
     /// <summary>
@@ -36,9 +36,9 @@ namespace Shell
     /// </summary>
     /// <param name="lstItems">List of Items</param>
     /// <param name="strFileName">XML File path</param>
-    public static void Serialization(List<Item> lstItems, string strFileName)
+    public static void Serialization(List<Command> lstItems, string strFileName)
     {
-      XmlSerializer serializer = new XmlSerializer(typeof(List<Item>));
+      XmlSerializer serializer = new XmlSerializer(typeof(List<Command>));
       using (var stream = File.OpenWrite(strFileName))
       {
         serializer.Serialize(stream, lstItems);

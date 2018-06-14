@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandMgr.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="Command.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XML.cs" />

@@ -13,12 +13,12 @@ namespace UnitTests
     public void Generation()
     {
       //Generation of XML
-      List<Item> lstItem = new List<Item>();
-      lstItem.Add(new Item { Name = "test1", Path = "test1.exe" });
-      lstItem.Add(new Item { Name = "test2", Path = "test2.exe" });
+      List<Command> lstItem = new List<Command>();
+      lstItem.Add(new Command { Name = "test1", Path = "test1.exe" });
+      lstItem.Add(new Command { Name = "test2", Path = "test2.exe" });
       XML.Serialization(lstItem, XMLPATH);
       //Read XML
-      List<Item> lstRead = XML.Deserialize(XMLPATH);
+      List<Command> lstRead = XML.Deserialize(XMLPATH);
       //Asserts
       Assert.AreEqual(lstItem.Count, lstRead.Count, "Error in List.Count");
       TestContext.WriteLine($"lstItem.Count {lstItem.Count}");

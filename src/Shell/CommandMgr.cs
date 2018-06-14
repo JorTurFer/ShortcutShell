@@ -13,7 +13,7 @@ namespace Shell
     /// <summary>
     /// Command collection
     /// </summary>
-    static List<Item> m_lstItems = XML.Deserialize(XMLPATH);
+    static List<Command> m_lstItems = XML.Deserialize(XMLPATH);
     /// <summary>
     /// Add command to the list
     /// </summary>
@@ -21,7 +21,7 @@ namespace Shell
     /// <param name="strPath">Execution path</param>
     public static void AddCommand(string strName, string strPath)
     {
-      Item newItem = new Item();
+      Command newItem = new Command();
       newItem.Name = strName;
       newItem.Path = strPath;
       m_lstItems.Add(newItem);
@@ -33,7 +33,7 @@ namespace Shell
     /// <param name="strName">Comand name</param>
     public static void RemoveCommand(string strName)
     {
-      Item newItem = m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).First();
+      Command newItem = m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).First();
       m_lstItems.Remove(newItem);
       XML.Serialization(m_lstItems, XMLPATH);
 
@@ -42,7 +42,7 @@ namespace Shell
     /// Get the command list
     /// </summary>
     /// <returns></returns>
-    public static List<Item> GetCommands()
+    public static List<Command> GetCommands()
     {
       return m_lstItems;
     }
