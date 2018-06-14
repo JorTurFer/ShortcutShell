@@ -36,7 +36,6 @@ namespace Shell
       Command newItem = m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).First();
       m_lstItems.Remove(newItem);
       XML.Serialization(m_lstItems, XMLPATH);
-
     }
     /// <summary>
     /// Get the command list

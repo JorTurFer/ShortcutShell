@@ -113,7 +113,7 @@ namespace Shell
       if (strCommand.Length < 3)
       {
         Console.WriteLine("Error adding the command, follow the template \"add CommandName CommandPath\"");
-        return; ;
+        return;
       }
       if (!CommandMgr.Exists(strCommand[1]))
       {
