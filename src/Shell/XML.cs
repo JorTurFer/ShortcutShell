@@ -38,6 +38,11 @@ namespace Shell
     /// <param name="strFileName">XML File path</param>
     public static void Serialization(List<Command> lstItems, string strFileName)
     {
+      //Clean the files 
+      if (File.Exists(strFileName))
+      {
+        File.Delete(strFileName);
+      }
       XmlSerializer serializer = new XmlSerializer(typeof(List<Command>));
       using (var stream = File.OpenWrite(strFileName))
       {
