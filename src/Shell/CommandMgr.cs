@@ -19,19 +19,18 @@ namespace Shell
     /// </summary>
     /// <param name="strName">Command name</param>
     /// <param name="strPath">Execution path</param>
-    public static void AddCommand(string strInput)
+    public static void AddCommand(Command command)
     {
-      Command newItem = new Command(strInput);
-      m_lstItems.Add(newItem);
+      m_lstItems.Add(command);
       XML.Serialization(m_lstItems, XMLPATH);
     }
     /// <summary>
     /// Remove command from the list
     /// </summary>
     /// <param name="strName">Comand name</param>
-    public static void RemoveCommand(string strName)
+    public static void RemoveCommand(Command command)
     {
-      Command newItem = m_lstItems.Where(x => string.Equals(x.Name, strName, StringComparison.InvariantCultureIgnoreCase)).First();
+      Command newItem = m_lstItems.Where(x => string.Equals(x.Name, command.Name, StringComparison.InvariantCultureIgnoreCase)).First();
       m_lstItems.Remove(newItem);
       XML.Serialization(m_lstItems, XMLPATH);
     }
@@ -70,9 +69,9 @@ namespace Shell
     /// </summary>
     /// <param name="strName">Command Name</param>
     /// <returns></returns>
-    public static bool Exists(string strName)
+    public static bool Exists(Command command)
     {
-      return m_lstItems.Exists(x => x.Name == strName);
+      return m_lstItems.Exists(x=>x.Name == command.Name);
     }
   }
 }

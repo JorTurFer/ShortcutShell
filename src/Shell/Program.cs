@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using CommandLine;
 
 namespace Shell
 {
@@ -11,26 +12,41 @@ namespace Shell
     static void Main(string[] args)
     {
       bool bContinue = true;
-
-      while (bContinue)
+      bool bExternal = false;
+      string[] Argumments = args;
+      //Support for external executions
+      if (Argumments.Length > 0)
       {
-        string strInput = Console.ReadLine();
-        //Empty input
-        if (string.IsNullOrWhiteSpace(strInput))
+        bContinue = false;
+        bExternal = true;
+      }
+      do
+      {
+        if (!bExternal)
         {
-          continue;
+          string strInput = Console.ReadLine();
+          //Empty input
+          if (string.IsNullOrWhiteSpace(strInput))
+          {
+            continue;
+          }
+          Argumments = strInput.Split(' ');
         }
         //Commands splited
-        string[] strCommand = strInput.Split(' ');
-        switch (strCommand[0].ToLowerInvariant())
+        switch (Argumments[0].ToLowerInvariant())
         {
           //Add a command
           case "add":
-            AddCommand(string.Join(" ", strCommand.Skip(1)));
+            var resAdd = Parser.Default.ParseArguments<Command>(Argumments);
+            if (resAdd.Tag == ParserResultType.NotParsed)
+            {
+              continue;
+            }
+            AddCommand(MakeResult(resAdd));
             break;
           //Remove a command
           case "remove":
-            RemoveCommand(strCommand[1]);
+            RemoveCommand(new Command { Name = Argumments[1] });
             break;
           //list Commands
           case "list":
@@ -51,17 +67,17 @@ namespace Shell
             continue;
           //Execute
           default:
-            var command = CommandMgr.GetCommandByName(strCommand[0]);
+            var command = CommandMgr.GetCommandByName(Argumments[0]);
             if (command != null)
             {
-              Execute(command, string.Join(" ", strCommand.ToList().Skip(1)));
+              Execute(command, string.Join(" ", Argumments.ToList().Skip(1)), bExternal);
             }
             break;
         }
-      }
+      } while (bContinue);
     }
 
-    static void Execute(Command CurrentCommand, string strArgumments)
+    static void Execute(Command CurrentCommand, string strArgumments, bool bSync)
     {
       //Check if a process is in execution
       if (commandProcess != null)
@@ -115,13 +131,17 @@ namespace Shell
       {
         commandProcess = null;
       }
+      if (bSync)
+      {
+        commandProcess?.WaitForExit();
+      }
     }
-    static void AddCommand(string strInput)
+    static void AddCommand(Command command)
     {
-      if (!CommandMgr.Exists(strInput.Split(' ')[0]))
+      if (!CommandMgr.Exists(command))
       {
         //Add Command joining the end of the array
-        CommandMgr.AddCommand(strInput);
+        CommandMgr.AddCommand(command);
         Console.WriteLine("Added command");
       }
       else
@@ -129,12 +149,12 @@ namespace Shell
         Console.WriteLine("The command already exists");
       }
     }
-    private static void RemoveCommand(string strName)
+    private static void RemoveCommand(Command command)
     {
-      if (CommandMgr.Exists(strName))
+      if (CommandMgr.Exists(command))
       {
         //remove Command
-        CommandMgr.RemoveCommand(strName);
+        CommandMgr.RemoveCommand(command);
         Console.WriteLine("Removed command");
       }
       else
@@ -150,6 +170,13 @@ namespace Shell
       {
         Console.WriteLine($"{command.Name}\t->\t{command.Dettached}\t->\t{command.Path}");
       }
+    }
+
+    static Command MakeResult(ParserResult<Command> result)
+    {
+      Command ret = new Command();
+      result.WithParsed(x => ret = x);
+      return ret;
     }
   }
 }

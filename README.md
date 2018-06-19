@@ -5,16 +5,16 @@ This application provides a customizable shortcut shell from terminal
 ## System Commands
 |System Command|Syntax|Description|
 |-------|------|-----------|
-|"add"|add CommandName -p "CommandPath" -d "Dettached"|Add new command to the system|
-|"remove"|remove "CommandName"|Delete a command from the system|
+|"add"|add -n CommandName -p CommandPath -d Dettached|Add new command to the system|
+|"remove"|remove CommandName|Delete a command from the system|
 |"list"|list|List registered commands|
 |"close"|close|If any command is in execution, closes it|
 |"clear"|clear|Clear the window|
 
 ## System arguments
-
-	-p "path" -> Indicate the path of the binary
-	-d "true/false" -> Indicate if the command should be attached to shell or not
+	Required: -n "name" -> Indicate the name of the command
+	Required: -p "path" -> Indicate the path of the binary
+	Optional: -d "true/false" -> Indicate if the command should be attached to shell or not (Default: false)
 
 ## Usage Commands
 |Command|Syntax|Description|
