@@ -13,11 +13,11 @@ namespace Shell
     {
       bool bContinue = true;
       bool bSync = false;
-
+      string[] Argumments = args;
       do
       {
         //Support for external executions
-        if (args.Length > 0)
+        if (Argumments.Length > 0)
         {
           bContinue = false;
           bSync = true;
@@ -30,21 +30,23 @@ namespace Shell
           {
             continue;
           }
-          args = strInput.Split(' ');
+          Argumments = strInput.Split(' ');
         }
         //Commands splited
-        switch (args[0].ToLowerInvariant())
+        switch (Argumments[0].ToLowerInvariant())
         {
           //Add a command
           case "add":
-            var resAdd = Parser.Default.ParseArguments<Command>(args);
+            var resAdd = Parser.Default.ParseArguments<Command>(Argumments);
             if (resAdd.Tag == ParserResultType.NotParsed)
+            {
               continue;
+            }
             AddCommand(MakeResult(resAdd));
             break;
           //Remove a command
           case "remove":
-            RemoveCommand(new Command {Name = args[1] });
+            RemoveCommand(new Command {Name = Argumments[1] });
             break;
           //list Commands
           case "list":
@@ -65,10 +67,10 @@ namespace Shell
             continue;
           //Execute
           default:
-            var command = CommandMgr.GetCommandByName(args[0]);
+            var command = CommandMgr.GetCommandByName(Argumments[0]);
             if (command != null)
             {
-              Execute(command, string.Join(" ", args.ToList().Skip(1)),bSync);
+              Execute(command, string.Join(" ", Argumments.ToList().Skip(1)),bSync);
             }
             break;
         }
@@ -131,7 +133,7 @@ namespace Shell
       }
       if(bSync)
       {
-        commandProcess.WaitForExit();
+        commandProcess?.WaitForExit();
       }
     }
     static void AddCommand(Command command)
@@ -176,7 +178,5 @@ namespace Shell
       result.WithParsed(x => ret = x);
       return ret;
     }
-
-
   }
 }

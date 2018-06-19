@@ -28,7 +28,6 @@ namespace UnitTests
     [TestMethod]
     public void PathByNameTest()
     {
-
       Assert.AreEqual("test1.exe", CommandMgr.GetCommandPathByName("test1"), "Error, getting the path");
       Assert.AreEqual("test2.exe", CommandMgr.GetCommandPathByName("test2"), "Error, getting the path");
       TestContext.WriteLine($"Expected \"test1.exe\" -> Recived \"{CommandMgr.GetCommandPathByName("test1")}\"");
