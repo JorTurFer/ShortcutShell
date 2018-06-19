@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using CommandLine;
 
 namespace Shell
 {
@@ -15,6 +16,8 @@ namespace Shell
       while (bContinue)
       {
         string strInput = Console.ReadLine();
+        string[] argumments = strInput.Split(' ');
+        var ParseResult = Parser.Default.ParseArguments<Command>(argumments);
         //Empty input
         if (string.IsNullOrWhiteSpace(strInput))
         {
@@ -22,15 +25,19 @@ namespace Shell
         }
         //Commands splited
         string[] strCommand = strInput.Split(' ');
-        switch (strCommand[0].ToLowerInvariant())
+        switch (argumments[0].ToLowerInvariant())
         {
           //Add a command
           case "add":
-            AddCommand(string.Join(" ", strCommand.Skip(1)));
+            if (ParseResult.Tag == ParserResultType.NotParsed)
+              continue;
+            AddCommand(MakeResult(ParseResult));
             break;
           //Remove a command
           case "remove":
-            RemoveCommand(strCommand[1]);
+            if (ParseResult.Tag == ParserResultType.NotParsed)
+              continue;
+            RemoveCommand(MakeResult(ParseResult));
             break;
           //list Commands
           case "list":
@@ -116,12 +123,12 @@ namespace Shell
         commandProcess = null;
       }
     }
-    static void AddCommand(string strInput)
+    static void AddCommand(Command command)
     {
-      if (!CommandMgr.Exists(strInput.Split(' ')[0]))
+      if (!CommandMgr.Exists(command))
       {
         //Add Command joining the end of the array
-        CommandMgr.AddCommand(strInput);
+        CommandMgr.AddCommand(command);
         Console.WriteLine("Added command");
       }
       else
@@ -129,12 +136,12 @@ namespace Shell
         Console.WriteLine("The command already exists");
       }
     }
-    private static void RemoveCommand(string strName)
+    private static void RemoveCommand(Command command)
     {
-      if (CommandMgr.Exists(strName))
+      if (CommandMgr.Exists(command))
       {
         //remove Command
-        CommandMgr.RemoveCommand(strName);
+        CommandMgr.RemoveCommand(command);
         Console.WriteLine("Removed command");
       }
       else
@@ -151,5 +158,14 @@ namespace Shell
         Console.WriteLine($"{command.Name}\t->\t{command.Dettached}\t->\t{command.Path}");
       }
     }
+
+    static Command MakeResult(ParserResult<Command> result)
+    {
+      Command ret = new Command();
+      result.WithParsed(x => ret = x);
+      return ret;
+    }
+
+    
   }
 }
