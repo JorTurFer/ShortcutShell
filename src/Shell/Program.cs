@@ -12,32 +12,39 @@ namespace Shell
     static void Main(string[] args)
     {
       bool bContinue = true;
+      bool bSync = false;
 
-      while (bContinue)
+      do
       {
-        string strInput = Console.ReadLine();
-        string[] argumments = strInput.Split(' ');
-        var ParseResult = Parser.Default.ParseArguments<Command>(argumments);
-        //Empty input
-        if (string.IsNullOrWhiteSpace(strInput))
+        //Support for external executions
+        if (args.Length > 0)
         {
-          continue;
+          bContinue = false;
+          bSync = true;
+        }
+        else
+        {
+          string strInput = Console.ReadLine();
+          //Empty input
+          if (string.IsNullOrWhiteSpace(strInput))
+          {
+            continue;
+          }
+          args = strInput.Split(' ');
         }
         //Commands splited
-        string[] strCommand = strInput.Split(' ');
-        switch (argumments[0].ToLowerInvariant())
+        switch (args[0].ToLowerInvariant())
         {
           //Add a command
           case "add":
-            if (ParseResult.Tag == ParserResultType.NotParsed)
+            var resAdd = Parser.Default.ParseArguments<Command>(args);
+            if (resAdd.Tag == ParserResultType.NotParsed)
               continue;
-            AddCommand(MakeResult(ParseResult));
+            AddCommand(MakeResult(resAdd));
             break;
           //Remove a command
           case "remove":
-            if (ParseResult.Tag == ParserResultType.NotParsed)
-              continue;
-            RemoveCommand(MakeResult(ParseResult));
+            RemoveCommand(new Command {Name = args[1] });
             break;
           //list Commands
           case "list":
@@ -58,17 +65,17 @@ namespace Shell
             continue;
           //Execute
           default:
-            var command = CommandMgr.GetCommandByName(strCommand[0]);
+            var command = CommandMgr.GetCommandByName(args[0]);
             if (command != null)
             {
-              Execute(command, string.Join(" ", strCommand.ToList().Skip(1)));
+              Execute(command, string.Join(" ", args.ToList().Skip(1)),bSync);
             }
             break;
         }
-      }
+      } while (bContinue);
     }
 
-    static void Execute(Command CurrentCommand, string strArgumments)
+    static void Execute(Command CurrentCommand, string strArgumments,bool bSync)
     {
       //Check if a process is in execution
       if (commandProcess != null)
@@ -122,6 +129,10 @@ namespace Shell
       {
         commandProcess = null;
       }
+      if(bSync)
+      {
+        commandProcess.WaitForExit();
+      }
     }
     static void AddCommand(Command command)
     {
@@ -166,6 +177,6 @@ namespace Shell
       return ret;
     }
 
-    
+
   }
 }
