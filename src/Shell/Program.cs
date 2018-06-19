@@ -12,17 +12,17 @@ namespace Shell
     static void Main(string[] args)
     {
       bool bContinue = true;
-      bool bSync = false;
+      bool bExternal = false;
       string[] Argumments = args;
+      //Support for external executions
+      if (Argumments.Length > 0)
+      {
+        bContinue = false;
+        bExternal = true;
+      }
       do
       {
-        //Support for external executions
-        if (Argumments.Length > 0)
-        {
-          bContinue = false;
-          bSync = true;
-        }
-        else
+        if (!bExternal)
         {
           string strInput = Console.ReadLine();
           //Empty input
@@ -46,7 +46,7 @@ namespace Shell
             break;
           //Remove a command
           case "remove":
-            RemoveCommand(new Command {Name = Argumments[1] });
+            RemoveCommand(new Command { Name = Argumments[1] });
             break;
           //list Commands
           case "list":
@@ -70,14 +70,14 @@ namespace Shell
             var command = CommandMgr.GetCommandByName(Argumments[0]);
             if (command != null)
             {
-              Execute(command, string.Join(" ", Argumments.ToList().Skip(1)),bSync);
+              Execute(command, string.Join(" ", Argumments.ToList().Skip(1)), bExternal);
             }
             break;
         }
       } while (bContinue);
     }
 
-    static void Execute(Command CurrentCommand, string strArgumments,bool bSync)
+    static void Execute(Command CurrentCommand, string strArgumments, bool bSync)
     {
       //Check if a process is in execution
       if (commandProcess != null)
@@ -131,7 +131,7 @@ namespace Shell
       {
         commandProcess = null;
       }
-      if(bSync)
+      if (bSync)
       {
         commandProcess?.WaitForExit();
       }
