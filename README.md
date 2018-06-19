@@ -12,9 +12,9 @@ This application provides a customizable shortcut shell from terminal
 |"clear"|clear|Clear the window|
 
 ## System arguments
-	-n "name" -> Indicate the name of the command
-	-p "path" -> Indicate the path of the binary
-	-d "true/false" -> Indicate if the command should be attached to shell or not
+	Required: -n "name" -> Indicate the name of the command
+	Required: -p "path" -> Indicate the path of the binary
+	Optional: -d "true/false" -> Indicate if the command should be attached to shell or not (Default: false)
 
 ## Usage Commands
 |Command|Syntax|Description|
