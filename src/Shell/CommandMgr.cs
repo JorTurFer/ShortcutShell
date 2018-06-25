@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Shell
 {
@@ -9,11 +10,21 @@ namespace Shell
     /// <summary>
     /// Path of the XML file
     /// </summary>
-    const string XMLPATH = "./Commands.xml";
+    static readonly string XMLPATH;
+    /// <summary>
+    /// Static constructor to initialize the fields
+    /// </summary>
+    static CommandMgr()
+    {
+      var _strFullName = System.Reflection.Assembly.GetEntryAssembly().Location;
+      var _strPath = Path.GetDirectoryName(_strFullName);
+      XMLPATH = Path.Combine(_strPath, "Commands.xml");
+      m_lstItems = XML.Deserialize(XMLPATH);
+    }
     /// <summary>
     /// Command collection
     /// </summary>
-    static List<Command> m_lstItems = XML.Deserialize(XMLPATH);
+    static List<Command> m_lstItems;
     /// <summary>
     /// Add command to the list
     /// </summary>
@@ -71,7 +82,7 @@ namespace Shell
     /// <returns></returns>
     public static bool Exists(Command command)
     {
-      return m_lstItems.Exists(x=>x.Name == command.Name);
+      return m_lstItems.Exists(x => x.Name == command.Name);
     }
   }
 }
