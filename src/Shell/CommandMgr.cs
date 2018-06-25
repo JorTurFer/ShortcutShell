@@ -10,21 +10,20 @@ namespace Shell
     /// <summary>
     /// Path of the XML file
     /// </summary>
-    static readonly string XMLPATH;
-    /// <summary>
-    /// Static constructor to initialize the fields
-    /// </summary>
-    static CommandMgr()
-    {
-      var _strFullName = System.Reflection.Assembly.GetEntryAssembly().Location;
-      var _strPath = Path.GetDirectoryName(_strFullName);
-      XMLPATH = Path.Combine(_strPath, "Commands.xml");
-      m_lstItems = XML.Deserialize(XMLPATH);
-    }
+    public static string strXmlPath { get; private set; }
     /// <summary>
     /// Command collection
     /// </summary>
     static List<Command> m_lstItems;
+    /// <summary>
+    /// Load the commands from XML file
+    /// </summary>
+    /// <param name="strPath">Path of XML</param>
+    public static void Load(string strPath)
+    {
+      strXmlPath = strPath;
+      m_lstItems = XML.Deserialize(strXmlPath);
+    }
     /// <summary>
     /// Add command to the list
     /// </summary>
@@ -33,7 +32,7 @@ namespace Shell
     public static void AddCommand(Command command)
     {
       m_lstItems.Add(command);
-      XML.Serialization(m_lstItems, XMLPATH);
+      XML.Serialization(m_lstItems, strXmlPath);
     }
     /// <summary>
     /// Remove command from the list
@@ -43,7 +42,7 @@ namespace Shell
     {
       Command newItem = m_lstItems.Where(x => string.Equals(x.Name, command.Name, StringComparison.InvariantCultureIgnoreCase)).First();
       m_lstItems.Remove(newItem);
-      XML.Serialization(m_lstItems, XMLPATH);
+      XML.Serialization(m_lstItems, strXmlPath);
     }
     /// <summary>
     /// Get the command list

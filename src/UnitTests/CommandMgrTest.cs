@@ -17,9 +17,7 @@ namespace UnitTests
         File.Delete(XMLTest.XMLPATH);
       }
 
-      var lstCommands = CommandMgr.GetCommands();
-      Assert.AreEqual(0, lstCommands.Count, "Error cleaning the CommandMgr");
-      TestContext.WriteLine($"List.Count After = {lstCommands.Count}");
+      CommandMgr.Load(XMLTest.XMLPATH);
       CommandMgr.AddCommand(new Command { Name = "test1", Path = "test1.exe" });
       CommandMgr.AddCommand(new Command { Name = "test2", Path = "test2.exe" });
       Assert.AreEqual(2, CommandMgr.GetCommands().Count, "Error adding commands");
