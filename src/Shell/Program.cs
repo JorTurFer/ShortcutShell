@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using CommandLine;
-
+using System.Reflection;
+using System.IO;
 namespace Shell
 {
   static class Program
@@ -11,6 +11,12 @@ namespace Shell
     static Process commandProcess;
     static void Main(string[] args)
     {
+      //Read XML
+      var strBinaryFullPath = Assembly.GetEntryAssembly().Location;
+      var strBinaryPath = Path.GetDirectoryName(strBinaryFullPath);
+      var strXmlFullPath = Path.Combine(strBinaryPath,"Commands.xml");
+      CommandMgr.Load(strXmlFullPath);
+
       bool bContinue = true;
       bool bExternal = false;
       string[] Argumments = args;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Shell
 {
@@ -9,11 +10,20 @@ namespace Shell
     /// <summary>
     /// Path of the XML file
     /// </summary>
-    const string XMLPATH = "./Commands.xml";
+    public static string strXmlPath { get; private set; }
     /// <summary>
     /// Command collection
     /// </summary>
-    static List<Command> m_lstItems = XML.Deserialize(XMLPATH);
+    static List<Command> m_lstItems;
+    /// <summary>
+    /// Load the commands from XML file
+    /// </summary>
+    /// <param name="strPath">Path of XML</param>
+    public static void Load(string strPath)
+    {
+      strXmlPath = strPath;
+      m_lstItems = XML.Deserialize(strXmlPath);
+    }
     /// <summary>
     /// Add command to the list
     /// </summary>
@@ -22,7 +32,7 @@ namespace Shell
     public static void AddCommand(Command command)
     {
       m_lstItems.Add(command);
-      XML.Serialization(m_lstItems, XMLPATH);
+      XML.Serialization(m_lstItems, strXmlPath);
     }
     /// <summary>
     /// Remove command from the list
@@ -32,7 +42,7 @@ namespace Shell
     {
       Command newItem = m_lstItems.Where(x => string.Equals(x.Name, command.Name, StringComparison.InvariantCultureIgnoreCase)).First();
       m_lstItems.Remove(newItem);
-      XML.Serialization(m_lstItems, XMLPATH);
+      XML.Serialization(m_lstItems, strXmlPath);
     }
     /// <summary>
     /// Get the command list
@@ -71,7 +81,7 @@ namespace Shell
     /// <returns></returns>
     public static bool Exists(Command command)
     {
-      return m_lstItems.Exists(x=>x.Name == command.Name);
+      return m_lstItems.Exists(x => x.Name == command.Name);
     }
   }
 }
