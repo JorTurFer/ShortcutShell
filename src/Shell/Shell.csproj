@@ -7,7 +7,7 @@
     <ProjectGuid>{8B523D0C-16BC-4132-B297-5D5E12FB9A89}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Shell</RootNamespace>
-    <AssemblyName>Shell</AssemblyName>
+    <AssemblyName>Shell_SinMerge</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -55,7 +55,9 @@
     <Compile Include="XML.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -64,14 +66,14 @@
     <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <UsingTask TaskName="ILMerge.MSBuild.Tasks.ILMerge" AssemblyFile="$(SolutionDir)\packages\ILMerge.MSBuild.Tasks.1.0.0.3\tools\ILMerge.MSBuild.Tasks.dll" />
+  <UsingTask TaskName="ILMerge.MSBuild.Tasks.ILMerge" AssemblyFile="$(SolutionDir)\packages\ILMerge.MSBuild.Tasks.1.0.0.3\tools\ILMerge.MSBuild.Tasks.dll" />
   <Target Name="AfterBuild">
     <ItemGroup>
-      <MergeAsm Include="$(OutputPath)$(TargetFileName)" />
+      <MergeAsm Include="$(OutputPath)Shell_SinMerge.exe" />
       <MergeAsm Include="$(OutputPath)CommandLine.dll" />
     </ItemGroup>
     <PropertyGroup>
-      <MergedAssembly>$(ProjectDir)$(OutDir)$(TargetFileName)</MergedAssembly>
+      <MergedAssembly>$(ProjectDir)$(OutDir)Shell.exe</MergedAssembly>
     </PropertyGroup>
     <Message Text="ILMerge @(MergeAsm) -&gt; $(MergedAssembly)" Importance="high" />
     <ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MergedAssembly)" TargetKind="SameAsPrimaryAssembly" />
